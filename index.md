@@ -5,6 +5,8 @@
 
 ### 2024
 
+* 2024-12-11 [Sampling Octahedron Environment Map Lighting](https://waizui.github.io/posts/env_map_light/env_map_light.html)
+
 * 2024-10-10 [Monte Carlo Method](https://waizui.github.io/posts/monte_carlo/monte_carlo.html)
 
 * 2024-9-29 [Bounding Volume Hierarchy](https://waizui.github.io/posts/bvh/bvh.html)
