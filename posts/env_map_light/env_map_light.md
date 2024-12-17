@@ -104,7 +104,7 @@ how to determine which direction $\omega_j$ we should choose.
 ## Importance sampling
 
 Let's start with how to determine which direction to choose. Ideally, we want the direction to focus on the light sources,
-because if there are no light sources in one direction, we can skip the sampling of this direction, 
+If there are no light sources in one direction, we can skip the sampling of this direction, 
 since it has no contribution to final result.
 
 
