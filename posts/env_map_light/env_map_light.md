@@ -12,7 +12,7 @@
 
 # Sampling Octahedron Environment Map Lighting
 
-I will explain how to get a beautiful envrionment lighting map in this artical.
+I will explain how to get a beautiful environment lighting map in this article.
 The steps can be divided into: 
 
 1. Define a rendering equation.
@@ -26,40 +26,37 @@ The generated picture looks like this:
 
 ## Rendering Equation
 
-The Rendering equation used here is:
+The rendering equation used here is:
 
 $$
 \begin{align}
-    L_o(v) &= L_e(v) + \int_{\Omega} f_r(v,l)L_i(l)(n \cdot l)d\omega  \\
+    L_o(p,\omega_o) &= L_e(p,\omega_o) + \int_{H} f_r(p,\omega_o,\omega_i)L_i(p,\omega_i)(n \cdot \omega_i)d\omega_i  \\
 \end{align}
 $$
 
-where $v,l$ is outgoing direction and negative incoming direction respectively. 
-$L_o$ is outgoing radiance, $L_e$ is emitted radiance, $L_i$ is incoming radiance,
-$\Omega$  is unit hemisphere, $f_r(v,l$ ) is BRDF, $n$ is surface normal, 
-$\omega$ is solid angle on the hemisphere.
+where $\omega_o,\omega_i$ is outgoing direction and negative incoming direction respectively. 
+$L_o$ is outgoing radiance at position $p$, $L_e$ is emitted radiance, $L_i$ is incoming radiance,
+$H$  is sphere, $f_r(p,\omega_o,\omega_i)$ is BRDF, $n$ is surface normal.
 
-![rendering hemisphere]()
 
-For environment map, emitted radiance is always be zero, so it can be omitted,
-Then the final rendering equation used is the form without emitted radiance term:
+For reflection , emitted radiance is always be zero, so it can be omitted, and only upper hemisphere is affecting,
+thus the integral domain is upper hemisphere, Then the final rendering equation used is the form without emitted radiance term:
 
 $$
 \begin{align}
-    L_o(v) &= \int_{\Omega} f_r(v,l)L_i(l)(n \cdot l)d\omega  \\
+    L_o(p,\omega_o) &=  \int_{\Omega} f_r(p,\omega_o,\omega_i)L_i(p,\omega_i)(n \cdot \omega_i)d\omega_i  \\
 \end{align}
 $$
 
-Notice what we want is the radiance of outgoing direction, and $l$ is negative direction of incoming direction.
-Basically, the rendering equation defines what kind of operations we shold do in order to get the outgoing radiance.
-But, what operations exactly? 
+Notice what we want is the radiance of outgoing direction, and $\omega_i$ is negative direction of incoming direction.
+Basically, the rendering equation defines what kind of operations we should do in order to get the outgoing radiance.
+But, what operations exactly? The answer lies on solving the equation using Monte Carlo method.
 
-## Use Monte Carlo method!
+## Review Monte Carlo method
 
-I have briefly introduced [Monte Carlo method](https://waizui.github.io/posts/monte_carlo/monte_carlo.html) before,
-So I will not introduce it again here. But here are some supplementary explanation.
+I have briefly introduced [Monte Carlo method](https://waizui.github.io/posts/monte_carlo/monte_carlo.html) before, here are some supplementary explanation.
 
-For a Monte Carlo Integral:
+First, for a Monte Carlo Integral:
 
 $$ F_n = \frac{1}{n} \sum_{i=1}^{n} \frac{f(x_i)}{p(x_i)} $$
 
@@ -69,25 +66,46 @@ $$p(x) = \frac{f(x)}{\int_a^bf(x)dx}$$
 
 this makes variance minium.
 
-Next, for rendering equation, we can derive the form of integrating using spherical coordinates by substituting soild angle with 
-$d\omega = sin(\theta) d\theta d\phi$, and the integral will become:
+Second, for solving rendering equation, we can use Monte Carlo method:
 
 $$
 \begin{align}
-    L_o(v) &= \int_{\Omega} f_r(v,l)L_i(l)(n \cdot l)d\omega  \\
-           &= \int_0^{2\pi} \int_0^{\frac{\pi}{2}}f_r(v,l)L_i(l)(n \cdot l)sin(\theta)d\theta d\phi
+    L_o(p,\omega_o) &=  \int_{\Omega} f_r(p,\omega_o,\omega_i)L_i(p,\omega_i)(n \cdot \omega_i)d\omega_i  \\
+            & \approx \frac{1}{N} \sum_{j=0}^{N} \frac{f_r(p,\omega_o,\omega_j)L_i(p,\omega_j)(n \cdot \omega_j)}{pdf(\omega_j)} \\
 \end{align}
 $$
 
-Then use Monte Carlo method:
+## Solve Rendering Equation
+Since the discrete form of rendering equation is derived as:
 
 $$
 \begin{align}
-  L_o(v) &= \int_0^{2\pi} \int_0^{\frac{\pi}{2}}f_r(v,l)L_i(l)(n \cdot l)sin(\theta)d\theta d\phi \\
-         & \approx \frac{1}{N} \sum_{n=0}^{N} \frac{f(\phi_n,\theta_n)}{pdf(\phi_n,\theta_n)} \\
-         & \approx \frac{1}{N} \sum_{n=0}^{N} \frac{f_r(v,l)L_i(l)(n \cdot l)sin(\theta_n)}{pdf(\phi_n,\theta_n)}
+    L_o(p,\omega_o) \approx \frac{1}{N} \sum_{j=0}^{N} \frac{f_r(p,\omega_o,\omega_j)L_i(p,\omega_j)(n \cdot \omega_j)}{pdf(\omega_j)} \\
 \end{align}
 $$
+
+We can answer the question  what operations we should do. 
+
+- Basically, we choose a direction $\omega_j$.
+
+- In that direction, we get the incoming radiance $L_i$ and BRDF, which is a constant value $ \rho/\pi $ and we choose $\rho =1$
+in this article. 
+
+- Next, we multiply BRDF and radiance then scale the result with the product of surface normal $n$ and direction vector $\omega_j$.
+
+- Then divide the result by probability density function $pdf$ in that direction, weight it by the inverse of sampling count $N$.
+
+- Finally, sum all results.
+
+The steps seems simple enough, we can easily calculate  $f_r(p,\omega_o,\omega_j)$ and $(n \cdot \omega_j)$. 
+Incoming radiance can be fetched by looking up environment texture, the problems left is how to get $pdf$ value and 
+how to determine which direction $\omega_j$ we should choose.
+
+## Importance sampling
+
+Let's start with how to determine which direction to choose. Ideally, we want the direction to focus on the light sources,
+because if there are no light sources in one direction, we can skip the sampling of this direction, 
+since it has no contribution to final result.
 
 
 **to be continued...**

@@ -89,8 +89,8 @@ We can use our result as an estimate of the integral value. Like the dice exampl
 
 ## The Better Solution
 
-We restricted our variables to uniform random variables. But, as in the Gaussian distribution example, if we want to get an estimation of integrating this, 
-we can focus only on the values near the mean. We need our variables to have a higher probability near the mean value. 
+We restricted our variables to uniform random variables. But, as in the Gaussian distribution example, 
+if we want to get an estimation of integrating this using uniform random variable, we might get a result with huge variance.
 That means we cannot use a uniform distribution function as before. 
 
 Instead, we can design a probability distribution function $ p $ that gives higher probability near the mean of the Gaussian distribution. 
