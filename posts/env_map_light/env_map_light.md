@@ -167,8 +167,8 @@ So, conditional probability distribution can be calculated as:
 $$
 \begin{align}
     p(u|v) &= \frac{pdf(u,v)}{p_V(v)}  \\
-           &\approx \frac{{g[x,y]}/{A}}{\frac{1}{A} \frac{1}{W} \sum_{x=0}^{W-1}g[x,y] } \\
-           &=\frac{{g[x,y]}}{\frac{1}{W} \sum_{x=0}^{W-1}g[x,y] }
+           &\approx \frac{g[x,y]/A}{\frac{1}{A} \frac{1}{W} \sum_{x=0}^{W-1}g[x,y] } \\
+           &=\frac{g[x,y]}{\frac{1}{W} \sum_{x=0}^{W-1}g[x,y] }
 
 \end{align}
 $$
