@@ -120,12 +120,14 @@ Each pixel in the map represents incoming radiance of direction that from the sp
 
 ![uv mapping](./uv_mapping.png)
 
+**Fig.2.**
+
 The idea is to design a function that takes variable in $ [0,1]^2 $ and out put uv coordinates on the map,
 the coordinates follows the distribution of our target pdf, which means the coordinates are more in bright area, and less in dark area.
 
 With this idea, we can design the function as following:
 
- Calculate pdf value of each pixel on environment map, since we only care about the luminance not the color of light,
+First, we need to calculate pdf value of each pixel on environment map, since we only care about the luminance not the color of light,
 we can convert environment map into grayscale image and calculate pdf using:
 
 $$
@@ -148,8 +150,8 @@ $$
 
 Where $H,W$ is height and width of grayscale map.
 
-To map two variables to the grayscale map according to luminance distribution, we can use **Inverse cumulative distribution function**.
-In order to do so, firstly, calculate **conditional probability distribution** using pdf values:
+Then, to map two variables to the grayscale map according to luminance distribution, we can use **Inverse cumulative distribution function**.
+In order to do so, we need to calculate **conditional probability distribution** at first:
 
 $$
 \begin{align}
@@ -177,5 +179,49 @@ $$
 
 \end{align}
 $$
+
+Having conditional probability $p(u|v)$, we can use it to calculate inverse cumulative distribution function.
+
+Cumulative distribution function(CDF) defined as:
+
+$$
+\begin{align}
+    cdf(x) &= \int_a^x pdf(t)dt, x\in[a,b]
+\end{align}
+$$
+
+CDF does not have many properties we want, but the inverse CDF can map variables in $[0,1]$ respect the distribution of PDF.
+
+$$
+\begin{align}
+    t &=  cdf^{-1}(x), x\in [0,1], t\in [a,b]
+\end{align}
+$$
+
+This is illustrated in following fig.3:
+
+![cdf](./cdf.png)
+
+**Fig.3. Majority of x are mapped into $[t_1,t_2]$ since random variable t has very high probability density within $[t_1,t_2]$.**
+
+Even though inverse CDF has desired properties, we can not analytically get inverse CDF in most cases.
+One solution is numerically calculate the inverse CDF and store results in some look-up tables, this is illustrated in fig.3. 
+
+![invcdf](./invcdf.png)
+
+**Fig.3.For example, storing inverse CDF values of marginal distribution in table1 and of conditional distribution in table2, 
+then use table1 mapping variable x1 to v, and use variable x2 and v to get conditional distribution u from table2.**
+
+A code example of Importance Sampling can be found [here](https://github.com/waizui/rs-sampler/blob/main/src/envmap.rs#L265).
+The execution result of this code is the image of point's distribution using inverse CDF mapping as fig.4.
+
+![is](./importance.png)
+
+**Fig.4. Result of Importance Sampling(IS), sampling points(red dots) distributed more in bright area**
+
+## Rendering
+
+Finally, after getting PDF values and choosing sampling directions, we can now continue calculating our Monte Carlo estimator
+of Rendering Equation.
 
 **to be continued...**
