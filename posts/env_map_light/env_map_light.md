@@ -127,6 +127,7 @@ With this idea, we can design the function as following:
 
  Calculate pdf value of each pixel on environment map, since we only care about the luminance not the color of light,
 we can convert environment map into grayscale image and calculate pdf using:
+
 $$
 \begin{align}
     pdf(u,v) &=\frac{g(u,v)}{A} \\
@@ -134,8 +135,10 @@ $$
 
 \end{align}
 $$
+
 where  $g$ is grayscale value at $(u,v)$, $g[x,y]$ refers indexing grayscale map using pixel coordinates $x,y$. 
 $A$ is the integral over grayscale map, which can be calculated as:
+
 $$
 \begin{align}
     A  &= \int_0^1\int_0^1 g(u,v) du dv \\
@@ -147,6 +150,7 @@ Where $H,W$ is height and width of grayscale map.
 
 To map two variables to the grayscale map according to luminance distribution, we can use **Inverse cumulative distribution function**.
 In order to do so, firstly, calculate **conditional probability distribution** using pdf values:
+
 $$
 \begin{align}
     p(u|v) &= \frac{pdf(u,v)}{p_V(v)}  \\
@@ -154,6 +158,7 @@ $$
 $$
 
 where $p_V(v)$ is **marginal distribution** of variable $v$, which can be calculated using:
+
 $$
 \begin{align}
     p_V(v) &= \int_0^1 pdf(u,v)du \\
