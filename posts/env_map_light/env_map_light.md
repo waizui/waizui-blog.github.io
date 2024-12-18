@@ -178,7 +178,7 @@ $$
 \end{align}
 $$
 
-Having conditional probability $p(u|v)$, we can use it to calculate inverse cumulative distribution function.
+Having conditional probability p(u|v), we can use it to calculate inverse cumulative distribution function.
 Cumulative distribution function(CDF) defined as:
 
 $$
