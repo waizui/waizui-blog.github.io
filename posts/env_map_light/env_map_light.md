@@ -12,32 +12,38 @@
 
 # Sampling Octahedron Environment Map Lighting
 
-I will explain how to get a beautiful environment lighting map in this article.
+This article will explain how to get a beautiful environment lighting map.
 The steps can be divided into: 
 
-0. Octahedron environment map
-1. Define a rendering equation.
-2. A brief review of Monte Carlo.
-3. Prepare for solving the rendering equation.
-4. Calculate a inverse CDF map.
-5. Sampling.
+1. Introduce octahedron environment map.
+2. Define a rendering equation.
+3. A brief review of Monte Carlo.
+4. Prepare for solving the rendering equation.
+5. Calculate a inverse CDF map.
+6. Evaluating.
 
 The generated picture looks like this:
 
-![map](./envlight.png)
+![result](./envlight.png)
 
 **Fig.1. Sampling positions(left) and Environment lighting(right)**
 
 ## Octahedron environment map
 
-Octahedron environment map is a image that treated as unwrapping a sphere onto a octahedron 
-then flat the octahedron as a square.
+Octahedron environment map is a image that can be treated as unwrapping a sphere onto a octahedron 
+then flatten the octahedron to a square.
 
 ![mapping](./mapping.png)
 
 **Fig.2. Sphere points to square points**
 
-The details of mapping $(u,v) \in [0,1]$ onto unit sphere surface can be found here:
+This image will be used for illustration in this article:
+
+![tex](./envmap.png)
+
+**Fig.3. The texture**
+
+The details of mapping $(u,v) \in [0,1]$ onto unit sphere's surface can be found here:
 [Octahedron Mapping](https://pbr-book.org/4ed/Geometry_and_Transformations/Spherical_Geometry#x3-Equal-AreaMapping)
 
 ## Rendering Equation
@@ -55,7 +61,7 @@ $L_o$ is outgoing radiance at position $p$, $L_e$ is emitted radiance, $L_i$ is 
 $H$  is sphere, $f_r(p,\omega_o,\omega_i)$ is BRDF, $n$ is surface normal.
 
 
-For reflection , emitted radiance is always be zero, so it can be omitted, and only upper hemisphere is affecting,
+For reflection , emitted radiance is always be zero, so it can be omitted. Only upper hemisphere is affecting,
 thus the integral domain is upper hemisphere, Then the final rendering equation used is the form without emitted radiance term:
 
 $$
@@ -64,7 +70,7 @@ $$
 \end{align}
 $$
 
-Notice what we want is the radiance of outgoing direction, and $\omega_i$ is negative direction of incoming direction.
+Notice that $\omega_i$ is **negative direction** of incoming direction.
 Basically, the rendering equation defines what kind of operations we should do in order to get the outgoing radiance.
 But, what operations exactly? The answer lies on solving the equation using Monte Carlo method.
 
@@ -82,7 +88,7 @@ $$p(x) = \frac{f(x)}{\int_a^bf(x)dx}$$
 
 this makes variance minium.
 
-Second, for solving rendering equation, we can use Monte Carlo estimator:
+Second, for solving rendering equation, we  use this Monte Carlo estimator:
 
 $$
 \begin{align}
@@ -100,7 +106,7 @@ $$
 \end{align}
 $$
 
-We can answer the question  what operations we should do. 
+We can answer the question that what operations we should do?
 
 - Basically, we choose a direction $\omega_j$.
 
@@ -109,7 +115,7 @@ in this article.
 
 - Next, we multiply BRDF and radiance then scale the result with the product of surface normal $n$ and direction vector $\omega_j$.
 
-- Then divide the result by probability density function $pdf$ in that direction, weight it by the inverse of sampling count $N$.
+- Then, divide the result by probability density function $pdf$ in that direction, weight it by the inverse of sampling count $N$.
 
 - Finally, sum all results.
 
@@ -121,22 +127,21 @@ how to determine which direction $\omega_j$ we should choose.
 
 Let's start with how to determine which direction to choose. Ideally, we want the direction to only focus on the light sources.
 Because if there are no light sources in one direction, it has no contribution to final result, we can skip the sampling of this direction. 
-Analytically, doing so is been called **Importance sampling**,
+Doing so is called **Importance sampling**,
 which makes  Monte Carlo estimator $ F_n = \frac{1}{n} \sum_{i=1}^{n} \frac{f(x_i)}{p(x_i)} $ converges more quickly.
 
-How to get those directions that follows the direction of light sources? 
+And how to get those directions that follows the direction of light sources? 
 
-In this particular article, we are using a octahedron environment map for lighting, a point $x=(u,v), (u,v)\in[0,1]^2$ 
-on the can be mapped onto the surface of a sphere.
-
-Each pixel in the map represents incoming radiance of direction that from the sphere center point to corresponding surface position.
+In this article, we are using a octahedron environment map for lighting, a point $(u,v)\in[0,1]^2$ 
+can be mapped onto the surface of a sphere.
+So, for every pixel on the environment map represents incoming radiance of direction that from the sphere center point to corresponding surface position.
 
 ![uv mapping](./uv_mapping.png)
 
 **Fig.2.**
 
-The idea is to design a function that takes variable in $ [0,1]^2 $ and out put uv coordinates on the map,
-the coordinates follows the distribution of our target pdf, which means the coordinates are more in bright area, and less in dark area.
+The idea of doing importance sampling for environment map is to design a function that takes variable in $ [0,1]^2 $ and out put uv coordinates on the map
+and those coordinates follow the distribution of our target pdf, which means they exist more in bright area and less in dark area.
 
 With this idea, we can design the function as following:
 
@@ -162,8 +167,35 @@ $$
 
 Where $H,W$ is height and width of grayscale map.
 
-Then, to map two variables to the grayscale map according to luminance distribution, we can use **Inverse cumulative distribution function**.
-In order to do so, we need to calculate **conditional probability distribution** at first:
+Then, in order to map two variables onto the grayscale map according to its luminance distribution, 
+we can use **Inverse Cumulative distribution function**.
+
+**Cumulative distribution function(CDF)** defined as:
+
+$$
+\begin{align}
+    cdf(x) &= \int_a^x pdf(t)dt, x\in[a,b]
+\end{align}
+$$
+
+CDF does not have many properties we want, but the inverse CDF can map variables in $[0,1]$ respect the distribution of PDF.
+
+$$
+\begin{align}
+    t &=  cdf^{-1}(x), x\in [0,1], t\in [a,b]
+\end{align}
+$$
+
+This is illustrated in following fig.3:
+
+![cdf](./cdf.png)
+
+**Fig.3. Majority of x are mapped into $[t_1,t_2]$ since random variable t has very high probability density within $[t_1,t_2]$.**
+
+Even though inverse CDF has desired properties, we can not analytically get inverse CDF in most cases.
+One solution is numerically calculate the inverse CDF and store results in some look-up tables.
+
+To numerically calculate inverse CDF of two dimensional variables, we need to calculate **conditional probability distribution** at first:
 
 $$
 \begin{align}
@@ -191,35 +223,14 @@ $$
 \end{align}
 $$
 
-Having conditional probability p(u|v), we can use it to calculate inverse cumulative distribution function.
-Cumulative distribution function(CDF) defined as:
-
-$$
-\begin{align}
-    cdf(x) &= \int_a^x pdf(t)dt, x\in[a,b]
-\end{align}
-$$
-
-CDF does not have many properties we want, but the inverse CDF can map variables in $[0,1]$ respect the distribution of PDF.
-
-$$
-\begin{align}
-    t &=  cdf^{-1}(x), x\in [0,1], t\in [a,b]
-\end{align}
-$$
-
-This is illustrated in following fig.3:
-
-![cdf](./cdf.png)
-
-**Fig.3. Majority of x are mapped into $[t_1,t_2]$ since random variable t has very high probability density within $[t_1,t_2]$.**
-
-Even though inverse CDF has desired properties, we can not analytically get inverse CDF in most cases.
-One solution is numerically calculate the inverse CDF and store results in some look-up tables, this is illustrated in fig.3. 
+Having conditional probability $p(u|v)$ and marginal probability $p_V(v)$, 
+we can use $p_V(v)$ to calculate inverse CDF for $v$ and $p(u|v)$ for $u$ of $v\in[0,1]$ respectively.
+then store results in two look-up tables. Later we can use uniform variables $(x_1,x_2)$
+to get $(u,v)$ from those tables. This is illustrated in fig.3. 
 
 ![invcdf](./invcdf.png)
 
-**Fig.3.For example, storing inverse CDF values of marginal distribution in table1 and of conditional distribution in table2, 
+**Fig.3. For example, storing inverse CDF values of marginal distribution in table1 and of conditional distribution in table2, 
 then use table1 mapping variable x1 to v, and use variable x2 and v to get conditional distribution u from table2.**
 
 A code example of Importance Sampling can be found [here](https://github.com/waizui/rs-sampler/blob/main/src/envmap.rs#L265).
@@ -229,9 +240,34 @@ The execution result of this code is the image of point's distribution using inv
 
 **Fig.4. Result of Importance Sampling(IS), sampling points(red dots) distributed more in bright area**
 
-## Rendering
+## Evaluating
 
-Finally, after getting PDF values and choosing sampling directions, we can now continue calculating our Monte Carlo estimator
-of Rendering Equation.
+Finally, after getting PDF values and choosing sampling directions, we can now continue calculating our Monte Carlo estimator of rendering equation.
+I use an image represents a sphere, every pixel on this image can be mapped onto the sphere's surface,
+then evaluating rendering equation at every pixel is equivalent evaluating at sphere's surface.
 
-**to be continued...**
+Meanwhile, the Monte Carlo estimator should be modified because I use uv coordinates instead of $\omega_i$:
+
+$$
+\begin{align}
+    L_o(p,\omega_o) &\approx \frac{1}{N} \sum_{j=0}^{N} \frac{f_r(p,\omega_o,\omega_j)L_i(p,\omega_j)(n \cdot \omega_j)}{pdf(\omega_j)} \\
+                    &= \frac{1}{N} \sum_{j=0}^{N} \frac{f_r(p,\omega_o,\omega_j)L_i(p,\omega_j)(n \cdot \omega_j)}{pdf(u_j,v_j)}|J| \\
+\end{align}
+$$
+
+Where $J$ refers to **Jacobian** of parameterize $\omega_i$ using $(u,v)$ and the value is $4\pi$.
+
+So the Rendering Equation can be expressed as:
+
+$$
+\begin{align}
+     L_o(p,\omega_o) &\approx \frac{1}{N} \sum_{j=0}^{N} \frac{ \frac{1}{\pi} L_i(p,\omega_j)(n \cdot \omega_j)}{pdf(u_j,v_j)}4\pi \\
+                     &=\frac{4}{N} \sum_{j=0}^{N} \frac{L_i(p,\omega_j)(n \cdot \omega_j)}{pdf(u_j,v_j)} \\
+\end{align}
+$$
+
+Having this equation, we can implement it, A code(rust) example of rendering can be found [here](https://github.com/waizui/rs-sampler/blob/main/examples/envmap_example.rs#L10).
+
+Following is the rendering result.
+
+![result](./result.png)
