@@ -186,7 +186,7 @@ $$
 \end{align}
 $$
 
-This is illustrated in following fig.3:
+This is illustrated in following fig:
 
 ![cdf](./cdf.png)
 
@@ -226,7 +226,7 @@ $$
 Having conditional probability $p(u|v)$ and marginal probability $p_V(v)$, 
 we can use $p_V(v)$ to calculate inverse CDF for $v$ and $p(u|v)$ for $u$ of $v\in[0,1]$ respectively.
 then store results in two look-up tables. Later we can use uniform variables $(x_1,x_2)$
-to get $(u,v)$ from those tables. This is illustrated in fig.3. 
+to get $(u,v)$ from those tables. This is illustrated in Following fig. 
 
 ![invcdf](./invcdf.png)
 
@@ -234,7 +234,7 @@ to get $(u,v)$ from those tables. This is illustrated in fig.3.
 then use table1 mapping variable x1 to v, and use variable x2 and v to get conditional distribution u from table2.**
 
 A code example of Importance Sampling can be found [here](https://github.com/waizui/rs-sampler/blob/main/src/envmap.rs#L265).
-The execution result of this code is the image of point's distribution using inverse CDF mapping as fig.4.
+The execution result of this code is the image of point's distribution using inverse CDF mapping as fig.7.
 
 ![is](./importance.png)
 
