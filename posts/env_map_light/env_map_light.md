@@ -15,6 +15,7 @@
 I will explain how to get a beautiful environment lighting map in this article.
 The steps can be divided into: 
 
+0. Octahedron environment map
 1. Define a rendering equation.
 2. A brief review of Monte Carlo.
 3. Prepare for solving the rendering equation.
@@ -26,6 +27,18 @@ The generated picture looks like this:
 ![map](./envlight.png)
 
 **Fig.1. Sampling positions(left) and Environment lighting(right)**
+
+## Octahedron environment map
+
+Octahedron environment map is a image that treated as unwrapping a sphere onto a octahedron 
+then flat the octahedron as a square.
+
+![mapping](./mapping.png)
+
+**Fig.2. Sphere points to square points**
+
+The details of mapping $(u,v) \in [0,1]$ onto unit sphere surface can be found here:
+[Octahedron Mapping](https://pbr-book.org/4ed/Geometry_and_Transformations/Spherical_Geometry#x3-Equal-AreaMapping)
 
 ## Rendering Equation
 
