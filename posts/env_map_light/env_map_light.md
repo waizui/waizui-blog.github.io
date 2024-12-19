@@ -15,12 +15,12 @@
 This article will explain how to get a beautiful environment lighting map.
 The steps can be divided into: 
 
-1. Introduce octahedron environment map.
-2. Define a rendering equation.
-3. A brief review of Monte Carlo.
-4. Prepare for solving the rendering equation.
-5. Calculate a inverse CDF map.
-6. Evaluating.
+1. [Introduce octahedron environment map.](#octahedron-environment-map)
+2. [Define a rendering equation.](#rendering-equation)
+3. [A brief review of Monte Carlo.](#review-monte-carlo-method)
+4. [Prepare for solving the rendering equation.](#solve-rendering-equation)
+5. [Calculate a inverse CDF map.](#importance-sampling)
+6. [Evaluating.](#evaluating)
 
 The generated picture looks like this:
 
@@ -52,7 +52,7 @@ The rendering equation used here is:
 
 $$
 \begin{align}
-    L_o(p,\omega_o) &= L_e(p,\omega_o) + \int_{H} f_r(p,\omega_o,\omega_i)L_i(p,\omega_i)(n \cdot \omega_i)d\omega_i  \\
+    L_o(p,\omega_o) &= L_e(p,\omega_o)+\int_{H} f_r(p,\omega_o,\omega_i)L_i(p,\omega_i)(n \cdot \omega_i)d\omega_i  \\
 \end{align}
 $$
 
@@ -61,7 +61,7 @@ $L_o$ is outgoing radiance at position $p$, $L_e$ is emitted radiance, $L_i$ is 
 $H$  is sphere, $f_r(p,\omega_o,\omega_i)$ is BRDF, $n$ is surface normal.
 
 
-For reflection , emitted radiance is always be zero, so it can be omitted. Only upper hemisphere is affecting,
+For reflection , emitted radiance always be zero, so it can be omitted. Only upper hemisphere is affecting,
 thus the integral domain is upper hemisphere, Then the final rendering equation used is the form without emitted radiance term:
 
 $$
@@ -138,7 +138,7 @@ So, for every pixel on the environment map represents incoming radiance of direc
 
 ![uv mapping](./uv_mapping.png)
 
-**Fig.2.**
+**Fig.4.**
 
 The idea of doing importance sampling for environment map is to design a function that takes variable in $ [0,1]^2 $ and out put uv coordinates on the map
 and those coordinates follow the distribution of our target pdf, which means they exist more in bright area and less in dark area.
@@ -178,7 +178,7 @@ $$
 \end{align}
 $$
 
-CDF does not have many properties we want, but the inverse CDF can map variables in $[0,1]$ respect the distribution of PDF.
+CDF does not have many properties we want, but the inverse CDF can map variables in $[0,1]$ to $[a,b]$ according to the distribution of PDF.
 
 $$
 \begin{align}
@@ -190,7 +190,7 @@ This is illustrated in following fig.3:
 
 ![cdf](./cdf.png)
 
-**Fig.3. Majority of x are mapped into $[t_1,t_2]$ since random variable t has very high probability density within $[t_1,t_2]$.**
+**Fig.5. Majority of x are mapped into $[t_1,t_2]$ since random variable t has very high probability density within $[t_1,t_2]$.**
 
 Even though inverse CDF has desired properties, we can not analytically get inverse CDF in most cases.
 One solution is numerically calculate the inverse CDF and store results in some look-up tables.
@@ -230,7 +230,7 @@ to get $(u,v)$ from those tables. This is illustrated in fig.3.
 
 ![invcdf](./invcdf.png)
 
-**Fig.3. For example, storing inverse CDF values of marginal distribution in table1 and of conditional distribution in table2, 
+**Fig.6. For example, storing inverse CDF values of marginal distribution in table1 and of conditional distribution in table2, 
 then use table1 mapping variable x1 to v, and use variable x2 and v to get conditional distribution u from table2.**
 
 A code example of Importance Sampling can be found [here](https://github.com/waizui/rs-sampler/blob/main/src/envmap.rs#L265).
@@ -238,7 +238,7 @@ The execution result of this code is the image of point's distribution using inv
 
 ![is](./importance.png)
 
-**Fig.4. Result of Importance Sampling(IS), sampling points(red dots) distributed more in bright area**
+**Fig.7. Result of Importance Sampling(IS), sampling points(red dots) distributed more in bright area**
 
 ## Evaluating
 
