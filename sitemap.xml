@@ -4,137 +4,145 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
-
 
 <url>
   <loc>https://waizui.github.io/</loc>
-  <lastmod>2024-08-14T14:55:35+00:00</lastmod>
+  <lastmod>2024-12-19T08:12:29+00:00</lastmod>
   <priority>1.00</priority>
 </url>
 <url>
   <loc>https://waizui.github.io/about.html</loc>
-  <lastmod>2024-08-14T14:55:35+00:00</lastmod>
+  <lastmod>2024-12-19T08:12:29+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://waizui.github.io/posts/env_map_light/env_map_light.html</loc>
+  <lastmod>2024-12-19T08:12:29+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://waizui.github.io/posts/monte_carlo/monte_carlo.html</loc>
+  <lastmod>2024-12-19T08:12:29+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://waizui.github.io/posts/bvh/bvh.html</loc>
-  <lastmod>2024-09-29T12:17:59+00:00</lastmod>
+  <lastmod>2024-12-19T08:12:29+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://waizui.github.io/posts/gaussian_splatting/gaussian_splatting.html</loc>
-  <lastmod>2024-08-14T14:55:35+00:00</lastmod>
+  <lastmod>2024-12-19T08:12:29+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://waizui.github.io/posts/nvim_advanced/nvim_advanced.html</loc>
-  <lastmod>2024-08-14T14:55:35+00:00</lastmod>
+  <lastmod>2024-12-19T08:12:29+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://waizui.github.io/posts/nvim_intermediate/nvim_intermediate.html</loc>
-  <lastmod>2024-08-14T14:55:35+00:00</lastmod>
+  <lastmod>2024-12-19T08:12:29+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://waizui.github.io/posts/barycentric/barycentric.html</loc>
-  <lastmod>2024-08-14T14:55:35+00:00</lastmod>
+  <lastmod>2024-12-19T08:12:29+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://waizui.github.io/posts/nvim_basic/nvim_basic.html</loc>
-  <lastmod>2024-08-14T14:55:35+00:00</lastmod>
+  <lastmod>2024-12-19T08:12:29+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://waizui.github.io/posts/move_to_nvim/move_to_nvim.html</loc>
-  <lastmod>2024-08-14T14:55:35+00:00</lastmod>
+  <lastmod>2024-12-19T08:12:29+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://waizui.github.io/posts/japan_study/japan_study.html</loc>
-  <lastmod>2024-08-14T14:55:35+00:00</lastmod>
+  <lastmod>2024-12-19T08:12:29+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://waizui.github.io/posts/ibm_240/ibm_240.html</loc>
-  <lastmod>2024-08-14T14:55:35+00:00</lastmod>
+  <lastmod>2024-12-19T08:12:29+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://waizui.github.io/posts/ibm_t43/ibm_t43.html</loc>
-  <lastmod>2024-08-14T14:55:35+00:00</lastmod>
+  <lastmod>2024-12-19T08:12:29+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://waizui.github.io/posts/a_glimpse_of_quaternion/a_glimpse_of_quaternion.html</loc>
-  <lastmod>2024-08-14T14:55:35+00:00</lastmod>
+  <lastmod>2024-12-19T08:12:29+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://waizui.github.io/posts/bezier_curves/a_simple_way_to_understand_bezier_curves.html</loc>
-  <lastmod>2024-08-14T14:55:35+00:00</lastmod>
+  <lastmod>2024-12-19T08:12:29+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://waizui.github.io/posts/catToJapan/pets.html</loc>
-  <lastmod>2024-08-14T14:55:35+00:00</lastmod>
+  <lastmod>2024-12-19T08:12:29+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://waizui.github.io/posts/ray_marching/ray_marching.html</loc>
-  <lastmod>2024-08-14T14:55:35+00:00</lastmod>
+  <lastmod>2024-12-19T08:12:29+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://waizui.github.io/posts/normalTransform/normalTransform.html</loc>
-  <lastmod>2024-08-14T14:55:35+00:00</lastmod>
+  <lastmod>2024-12-19T08:12:29+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://waizui.github.io/posts/addressable/Addressable_issues.html</loc>
-  <lastmod>2024-08-14T14:55:35+00:00</lastmod>
+  <lastmod>2024-12-19T08:12:29+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://waizui.github.io/posts/unity_jenkins_android/unity+jenkins+android.html</loc>
-  <lastmod>2024-08-14T14:55:35+00:00</lastmod>
+  <lastmod>2024-12-19T08:12:29+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://waizui.github.io/posts/popstartTutor.html</loc>
-  <lastmod>2024-08-14T14:55:35+00:00</lastmod>
+  <lastmod>2024-12-19T08:12:29+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://waizui.github.io/posts/vimTutor/vimTutor.html</loc>
-  <lastmod>2024-08-14T14:55:35+00:00</lastmod>
+  <lastmod>2024-12-19T08:12:29+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://waizui.github.io/posts/ps3netsrvTutor.html</loc>
-  <lastmod>2024-08-14T14:55:35+00:00</lastmod>
+  <lastmod>2024-12-19T08:12:29+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://waizui.github.io/posts/ps2guide/ps2guide.html</loc>
-  <lastmod>2024-08-14T14:55:35+00:00</lastmod>
+  <lastmod>2024-12-19T08:12:29+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://waizui.github.io/posts/catToJapan/(%E7%94%B3%E8%AF%B7%E4%B9%A6%E5%8F%91%E9%80%81%E5%9C%B0%E5%9D%80)aqs_contact_list_dogcat.pdf</loc>
-  <lastmod>2024-08-14T14:55:35+00:00</lastmod>
+  <lastmod>2024-12-19T08:12:29+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
   <loc>https://waizui.github.io/posts/catToJapan/(%E5%8F%98%E6%9B%B4%E9%80%9A%E7%9F%A5%E4%B9%A6)modnotification.pdf</loc>
-  <lastmod>2024-08-14T14:55:35+00:00</lastmod>
+  <lastmod>2024-12-19T08:12:29+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
   <loc>https://waizui.github.io/posts/catToJapan/(%E8%BE%93%E5%87%BA%E5%9B%BD%E8%AF%81%E6%98%8E%E4%B9%A6%E6%8E%A8%E8%8D%90)import-other-5.pdf</loc>
-  <lastmod>2024-08-14T14:55:35+00:00</lastmod>
+  <lastmod>2024-12-19T08:12:29+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 
