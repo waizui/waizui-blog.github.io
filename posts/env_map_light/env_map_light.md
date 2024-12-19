@@ -43,7 +43,7 @@ This image will be used for illustration in this article:
 
 **Fig.3. The texture**
 
-The details of mapping $(u,v) \in [0,1]$ onto unit sphere's surface can be found here:
+The details of mapping $(u,v) \in [0,1]^2$ onto unit sphere's surface can be found here:
 [Octahedron Mapping](https://pbr-book.org/4ed/Geometry_and_Transformations/Spherical_Geometry#x3-Equal-AreaMapping)
 
 ## Rendering Equation
